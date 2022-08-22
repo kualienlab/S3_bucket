@@ -1,5 +1,6 @@
 import shutil
 from fastapi import FastAPI,File,UploadFile
+from fastapi.responses import FileResponse
 import os
 
 app = FastAPI()
@@ -34,3 +35,10 @@ def detail_file(file_name:str):
             return os.path.join(file_path,file)
     return "Not found"
 
+@app.get("/files_data/{file_path}")
+def files_data(file_path):
+    dir_path=os.path.join(os.getcwd()+'/static')
+    path=dir_path+"/"+file_path
+    if os.path.exists(path):
+        return FileResponse(path)
+    return path
