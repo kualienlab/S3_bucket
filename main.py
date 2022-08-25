@@ -2,6 +2,7 @@ import shutil
 from fastapi import FastAPI,File,UploadFile
 from fastapi.responses import FileResponse
 import os
+import shutil
 
 app = FastAPI()
 
@@ -42,3 +43,15 @@ def files_data(file_path):
     if os.path.exists(path):
         return FileResponse(path)
     return path
+
+@app.delete("/delete_file/{file_name}")
+def delete_file(file_name):
+    dir_path=os.path.join(os.getcwd()+'/static')
+    path=dir_path+"/"+file_name
+    
+    if os.path.exists(path):
+        os.unlink(path)
+        
+        return "Successful"
+    else:
+        return "failed"
